@@ -1,0 +1,131 @@
+package domain;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.xml.crypto.Data;
+
+import com.github.javafaker.Faker;
+
+public class Product implements ProductInterface{
+	private String name;
+	private Money price;
+	private Integer quantity;
+	private Date 	expiration;
+	private String 	mannufactured;
+	private Category category;
+	
+	private Product(String name, Money price, Integer quantity, Date expiration, String mannufactured,
+			Category category) {
+		super();
+		this.name = name;
+		this.price = price;
+		this.quantity = quantity;
+		this.expiration = expiration;
+		this.mannufactured = mannufactured;
+		this.category = category;
+	}
+	
+	public Product() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public Money getPrice() {
+		return price;
+	}
+	public void setPrice(Money price) {
+		this.price = price;
+	}
+	
+	public Integer getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+	
+	public Date getExpiration() {
+		return expiration;
+	}
+	public void setExpiration(Date expiration) {
+		this.expiration = expiration;
+	}
+	
+	public String getMannufactured() {
+		return mannufactured;
+	}
+	public void setMannufactured(String mannufactured) {
+		this.mannufactured = mannufactured;
+	}
+	
+	public Category getCategory() {
+		return category;
+	}
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	@Override
+	public String toString() {
+		return "Product [name = " + name + ", price = " + price.getCurrency() + ":" + price.getAmount() + ", quantity = " + quantity + ", expiration = " + expiration
+				+ ", mannufactured = " + mannufactured + ", category = " + category.getName() + "]";
+	}
+
+	@Override
+	public Product createProduct(String name, Money price, Integer quantity, Date expiration, String mannufactured,
+			Category category) {
+		return new Product(name, price, quantity, expiration, mannufactured, category);
+	}
+
+	@Override
+	public Product createFakeProduct() {
+		Faker faker = new Faker();
+		
+		Calendar futureDate = Calendar.getInstance();
+		futureDate.add(Calendar.DATE, 15);
+		
+		return new Product(faker.commerce().productName(), 
+						new Money(faker.currency().name(), 
+						(Float)faker.random().nextInt(100, 5000).floatValue()),
+						faker.random().nextInt(0, 100), faker.date().between(Calendar.getInstance().getTime(), futureDate.getTime()) ,
+						faker.country().countryCode2(), 
+						new Category(faker.commerce().department())  );
+		
+	}
+
+	@Override
+	public List<Product> createManyFakeProducts (int qty){
+		Faker faker = new Faker();
+		List<Product> products = new ArrayList<>();
+		
+		while(products.size()<qty){
+			Calendar futureDate = Calendar.getInstance();
+			futureDate.add(Calendar.DATE, 15);
+			
+			products.add( 
+					new Product(faker.commerce().productName(), 
+								new Money(faker.currency().name(), 
+								(Float)faker.random().nextInt(100, 5000).floatValue()),
+								faker.random().nextInt(0, 100), 
+								faker.date().between(Calendar.getInstance().getTime(), futureDate.getTime()) , 
+								faker.country().countryCode2(), 
+								new Category(faker.commerce().department())  )
+					);
+		}
+		
+		return products;
+	}
+	
+	
+
+}
