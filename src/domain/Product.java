@@ -11,22 +11,28 @@ import javax.xml.crypto.Data;
 import com.github.javafaker.Faker;
 
 public class Product implements ProductInterface{
+	
+	private Integer id; 
 	private String name;
 	private Money price;
 	private Integer quantity;
 	private Date 	expiration;
-	private String 	mannufactured;
+	private String 	manufacturer;
 	private Category category;
 	
-	private Product(String name, Money price, Integer quantity, Date expiration, String mannufactured,
+	private Product(Integer id,String name, Money price, Integer quantity, Date expiration, String mannufactured,
 			Category category) {
-		super();
+		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.quantity = quantity;
 		this.expiration = expiration;
-		this.mannufactured = mannufactured;
+		this.manufacturer = mannufactured;
 		this.category = category;
+	}
+	
+	public Integer getId() {
+		return id;
 	}
 	
 	public Product() {
@@ -62,10 +68,10 @@ public class Product implements ProductInterface{
 	}
 	
 	public String getMannufactured() {
-		return mannufactured;
+		return manufacturer;
 	}
 	public void setMannufactured(String mannufactured) {
-		this.mannufactured = mannufactured;
+		this.manufacturer = mannufactured;
 	}
 	
 	public Category getCategory() {
@@ -77,34 +83,33 @@ public class Product implements ProductInterface{
 
 	@Override
 	public String toString() {
-		return "Product [name = " + name + ", price = " + price.getCurrency() + ":" + price.getAmount() + ", quantity = " + quantity + ", expiration = " + expiration
-				+ ", mannufactured = " + mannufactured + ", category = " + category.getName() + "]";
+		return "Product [id =  " +id +" name = " + name + ", price = " + price.getCurrency() + ":" + price.getAmount() + ", quantity = " + quantity + ", expiration = " + expiration
+				+ ", mannufactured = " + manufacturer + ", category = " + category.getName() + "]";
 	}
 
 	@Override
-	public Product createProduct(String name, Money price, Integer quantity, Date expiration, String mannufactured,
+	public Product createProduct(Integer id, String name, Money price, Integer quantity, Date expiration, String mannufactured,
 			Category category) {
-		return new Product(name, price, quantity, expiration, mannufactured, category);
+		return new Product(id, name, price, quantity, expiration, mannufactured, category);
 	}
 
 	@Override
-	public Product createFakeProduct() {
+	public Product createFakeProduct(Integer id) {
 		Faker faker = new Faker();
 		
 		Calendar futureDate = Calendar.getInstance();
 		futureDate.add(Calendar.DATE, 15);
-		
-		return new Product(faker.commerce().productName(), 
-						new Money(faker.currency().name(), 
-						(Float)faker.random().nextInt(100, 5000).floatValue()),
-						faker.random().nextInt(0, 100), faker.date().between(Calendar.getInstance().getTime(), futureDate.getTime()) ,
+		return new Product(id, faker.commerce().productName(), 
+						new Money(faker.currency().code(), 
+						(Float)faker.random().nextInt(0, 2000).floatValue()),
+						faker.random().nextInt(0, 50), faker.date().between(Calendar.getInstance().getTime(), futureDate.getTime()) ,
 						faker.country().countryCode2(), 
 						new Category(faker.commerce().department())  );
 		
 	}
 
 	@Override
-	public List<Product> createManyFakeProducts (int qty){
+	public List<Product> createManyFakeProducts (int qty, Integer id){
 		Faker faker = new Faker();
 		List<Product> products = new ArrayList<>();
 		
@@ -113,10 +118,10 @@ public class Product implements ProductInterface{
 			futureDate.add(Calendar.DATE, 15);
 			
 			products.add( 
-					new Product(faker.commerce().productName(), 
-								new Money(faker.currency().name(), 
-								(Float)faker.random().nextInt(100, 5000).floatValue()),
-								faker.random().nextInt(0, 100), 
+					new Product(++id,faker.commerce().productName(), 
+								new Money(faker.currency().code(), 
+								(Float)faker.random().nextInt(0, 2000).floatValue()),
+								faker.random().nextInt(0, 50), 
 								faker.date().between(Calendar.getInstance().getTime(), futureDate.getTime()) , 
 								faker.country().countryCode2(), 
 								new Category(faker.commerce().department())  )

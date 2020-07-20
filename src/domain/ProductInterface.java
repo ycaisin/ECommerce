@@ -5,10 +5,10 @@ import java.util.List;
 
 public interface ProductInterface {
 	
-	public ProductInterface createProduct(String name, Money price, Integer quantity, Date expiration, String mannufactured,
+	public ProductInterface createProduct(Integer id, String name, Money price, Integer quantity, Date expiration, String mannufactured,
 			Category category);
 	
-	public Product createFakeProduct();
+	public Product createFakeProduct(Integer id);
 	
-	public List<Product> createManyFakeProducts(int qty);
+	public List<Product> createManyFakeProducts(int qty,Integer id);
 }
