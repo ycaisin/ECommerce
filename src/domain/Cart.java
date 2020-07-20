@@ -7,10 +7,24 @@ import java.util.List;
 // cart commerce (Business logic )+ ProdReposit
 public class Cart implements ProductRepository{
 	
-	private static List<Product> products = new ArrayList<>();
+	private static Cart instance;
+	
+	private List<Product> products = new ArrayList<>();
 
 	private static Money total = new Money("md lei", (float)0);
 	
+	
+	public Cart(){
+	};
+	
+	public static Cart getInstance(){
+		if(instance == null)
+			synchronized (Cart.class) {
+				if(instance == null)
+					instance = new Cart();
+			}
+		return instance;
+	}
 	
 	@Override
 	public void add(Product product) {

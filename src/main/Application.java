@@ -17,7 +17,9 @@ public class Application {
 
 	public static void main(String[] args) {
 		ProductFactory productFactory = new ProductFactory();
-		Cart cart = new Cart();
+		
+		Cart cart = new Cart().getInstance();
+		Cart cart2 = new Cart().getInstance();
 		
 		Faker faker = new Faker();
 		Calendar futureDate = Calendar.getInstance();
@@ -112,6 +114,19 @@ public class Application {
 		cart.calculateTotal();		
 		System.out.println("---Total of all products from your cart:" + cart.getTotal().getAmount() + "---");
 		
+		
+		
+		cart2.add(productFactory.getProduct(
+				"Hat", 
+				new Money("USD", (float)300), 
+				2, 
+				faker.date().between(
+						Calendar.getInstance().getTime(), 
+						futureDate.getTime()), 
+				"md", 
+				new Category("Beauty"))
+				);
+		cart2.findAll().forEach(c -> System.out.println(c));
 	}
 
 
