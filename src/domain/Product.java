@@ -31,6 +31,14 @@ public class Product implements ProductInterface{
 		this.category = category;
 	}
 	
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
 	public Integer getId() {
 		return id;
 	}

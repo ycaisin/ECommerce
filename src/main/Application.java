@@ -9,6 +9,8 @@ import com.github.javafaker.Faker;
 
 import domain.Cart;
 import domain.Category;
+import domain.Currency;
+import domain.CurrencyProvider;
 import domain.Money;
 import domain.Product;
 import domain.ProductFactory;
@@ -19,7 +21,7 @@ public class Application {
 		ProductFactory productFactory = new ProductFactory();
 		
 		Cart cart = new Cart().getInstance();
-		Cart cart2 = new Cart().getInstance();
+		//CurrencyProvider currencyProvider = new CurrencyProvider().getInstance();
 		
 		Faker faker = new Faker();
 		Calendar futureDate = Calendar.getInstance();
@@ -27,27 +29,32 @@ public class Application {
 		
 		cart.add(productFactory.getProduct(
 								"Hat", 
-								new Money("USD", (float)300), 
-								2, 
+								new Money(CurrencyProvider.getInstance().generateFakeCurrencyCode(), (float)300), 
+								1, 
 								faker.date().between(
 										Calendar.getInstance().getTime(), 
 										futureDate.getTime()), 
 								"md", 
 								new Category("Beauty"))
-		);
-		
+				);
+				
 		cart.add(productFactory.getProduct(
 								"Yuliia", 
-								new Money("USD", (float)300), 
+								new Money(CurrencyProvider.getInstance().generateFakeCurrencyCode(), (float)300), 
 								2, 
 								faker.date().between(
 										Calendar.getInstance().getTime(), 
 										futureDate.getTime()), 
 								"md", 
 								new Category("Beauty"))
-);
+				);
+		cart.findAll().forEach(c -> System.out.println(c));
 		
-		cart.add(productFactory.getFakeProduct());
+		cart.calculateTotal("USD");		
+		System.out.println("---Total of all products from your cart : " + cart.getTotal().getAmount() + "---");
+		
+		
+		/*cart.add(productFactory.getFakeProduct());
 		
 		List<Product> p = new ArrayList<>(); 
 		p = productFactory.getManyFakeProducts(2);
@@ -68,7 +75,7 @@ public class Application {
 		
 		cart.findAll().forEach(c -> System.out.println(c));
 				
-		System.out.println("---Cart find by Name---");
+		/*System.out.println("---Cart find by Name---");
 		cart.findByName("Hat").forEach(c -> System.out.println(c));;
 		
 		System.out.println("---Cart find by Manufacturer = md ---");
@@ -110,23 +117,8 @@ public class Application {
 			System.out.println("---Products with Expiration date from " + toDate +" to "+ fromDate + " ---");
 			cart.findByExpirationDateBetween(toDate,fromDate).forEach(c -> System.out.println(c));;			
 		}
-		
-		cart.calculateTotal();		
-		System.out.println("---Total of all products from your cart:" + cart.getTotal().getAmount() + "---");
-		
-		
-		
-		cart2.add(productFactory.getProduct(
-				"Hat", 
-				new Money("USD", (float)300), 
-				2, 
-				faker.date().between(
-						Calendar.getInstance().getTime(), 
-						futureDate.getTime()), 
-				"md", 
-				new Category("Beauty"))
-				);
-		cart2.findAll().forEach(c -> System.out.println(c));
+		*/
+
 	}
 
 

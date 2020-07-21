@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-// cart commerce (Business logic )+ ProdReposit
 public class Cart implements ProductRepository{
 	
 	private static Cart instance;
 	
 	private List<Product> products = new ArrayList<>();
 
-	private static Money total = new Money("md lei", (float)0);
+	private static Money total = new Money("MDL",(float)0);
 	
 	
 	public Cart(){
@@ -131,29 +130,19 @@ public class Cart implements ProductRepository{
 		return total;
 	}; 
 	
-	public void calculateTotal(){
+	public void calculateTotal(String code){
 		Float sum = (float) 0;
 		Float exchangedValue = (float) 0;
 		for (Product p : products) {
-			exchangedValue = currencyExchange(p);
-			sum = sum + exchangedValue*p.getQuantity();
+				if(code.equals(p.getPrice().getCurrency().getCode())){
+					sum = sum +p.getPrice().getAmount() * p.getQuantity();
+				}else{
+					exchangedValue = (float) p.getPrice().toCurrency(code).getRate();
+					sum = sum + exchangedValue*p.getQuantity();
+				}
 		}
 		total.setAmount(sum); 
 	};
 	
-	public Float currencyExchange(Product p){
-		switch(p.getPrice().getCurrency()){
-			case "EUR": return (float) (p.getPrice().getAmount() * 19.51);
-			case "USD": return (float) (p.getPrice().getAmount() * 17.07);
-			case "UAH": return (float) (p.getPrice().getAmount() * 0.62);
-			case "RON": return (float) (p.getPrice().getAmount() * 4.03);
-			case "PLN": return (float) (p.getPrice().getAmount() * 4.35);
-			case "CZK": return (float) (p.getPrice().getAmount() * 0.73);
-			case "GBP": return (float) (p.getPrice().getAmount() * 21.43);
-			case "AUD": return (float) (p.getPrice().getAmount() * 11.93);
-			case "BYN": return (float) (p.getPrice().getAmount() * 7.12);
-		}
-		return (float) (p.getPrice().getAmount() * 0.1);
-	}
 
 }
