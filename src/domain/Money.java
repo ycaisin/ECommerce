@@ -1,6 +1,8 @@
 package domain;
 
-public class Money {
+import java.io.Serializable;
+
+public class Money implements Serializable{
 	private Currency currency;
 	private Float 	amount;
 	
@@ -23,6 +25,8 @@ public class Money {
 	}
 	
 	public Money() {
+		this.currency = CurrencyProvider.getInstance().getCurrency("EUR"); 
+		this.amount = (float) 0;
 	}
 	
 	public Money(String currencyCode, Float amount) {

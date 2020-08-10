@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,7 +11,7 @@ import javax.xml.crypto.Data;
 
 import com.github.javafaker.Faker;
 
-public class Product implements ProductInterface{
+public class Product implements ProductInterface, Serializable{
 	
 	private Integer id; 
 	private String name;
@@ -108,7 +109,7 @@ public class Product implements ProductInterface{
 		Calendar futureDate = Calendar.getInstance();
 		futureDate.add(Calendar.DATE, 15);
 		return new Product(id, faker.commerce().productName(), 
-						new Money(faker.currency().code(), 
+						new Money(CurrencyProvider.getInstance().generateFakeCurrencyCode(), 
 						(Float)faker.random().nextInt(0, 2000).floatValue()),
 						faker.random().nextInt(0, 50), faker.date().between(Calendar.getInstance().getTime(), futureDate.getTime()) ,
 						faker.country().countryCode2(), 
@@ -127,7 +128,7 @@ public class Product implements ProductInterface{
 			
 			products.add( 
 					new Product(++id,faker.commerce().productName(), 
-								new Money(faker.currency().code(), 
+								new Money(CurrencyProvider.getInstance().generateFakeCurrencyCode(), 
 								(Float)faker.random().nextInt(0, 2000).floatValue()),
 								faker.random().nextInt(0, 50), 
 								faker.date().between(Calendar.getInstance().getTime(), futureDate.getTime()) , 

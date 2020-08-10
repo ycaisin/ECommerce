@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.Map;
 
 import com.github.javafaker.Faker;
 
-public class CurrencyProvider {
+public class CurrencyProvider implements Serializable{
 	private static CurrencyProvider instance;
 	private Map<String,Currency> currencies; // дает доступ по ключе
 	

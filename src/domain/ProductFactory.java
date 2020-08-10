@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ProductFactory {
-	private static Integer productCount = 0; // 1. change factory to singleTone
+	private static Integer productCount = 0; 
 		
 	public Product getProduct(String name, Money price, Integer quantity, Date expiration, String mannufactured,
 			Category category){

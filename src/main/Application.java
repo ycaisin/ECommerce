@@ -1,5 +1,6 @@
 package main;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,16 +12,37 @@ import domain.Cart;
 import domain.Category;
 import domain.Currency;
 import domain.CurrencyProvider;
+import domain.DataRepository;
 import domain.Money;
 import domain.Product;
 import domain.ProductFactory;
+import domain.ProductRepository;
 
 public class Application {
 
-	public static void main(String[] args) {
-		ProductFactory productFactory = new ProductFactory();
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		
-		Cart cart = new Cart().getInstance();
+		CurrencyProvider currencyProvider = new CurrencyProvider().getInstance();
+		ProductFactory productFactory = new ProductFactory();
+		DataRepository dataRepository = new DataRepository();
+		
+		Product p = productFactory.getFakeProduct();
+		System.out.println("Created product:\n" + p);
+	
+		dataRepository.save(p);	
+		p = dataRepository.load(Product.class);
+		System.out.println("Product from file:\n" +p +"\n");
+		
+		Money money = new Money();
+		System.out.println("Created money:\n" + money);
+		dataRepository.save(money);
+		
+		money = dataRepository.load(Money.class);
+		System.out.println("Money from file:\n" + money);
+		/*
+		 
+		 Cart cart = new Cart().getInstance();
+		 
 		//CurrencyProvider currencyProvider = new CurrencyProvider().getInstance();
 		
 		Faker faker = new Faker();
@@ -54,7 +76,7 @@ public class Application {
 		System.out.println("---Total of all products from your cart : " + cart.getTotal().getAmount() + "---");
 		
 		
-		/*cart.add(productFactory.getFakeProduct());
+		cart.add(productFactory.getFakeProduct());
 		
 		List<Product> p = new ArrayList<>(); 
 		p = productFactory.getManyFakeProducts(2);
